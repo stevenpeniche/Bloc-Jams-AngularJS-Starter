@@ -44,6 +44,16 @@
     };
 
     /*
+    * @function stopSong
+    * @desc Stops audio file; i.e currentBuzzObject
+    * @param {Object} song
+    */
+    var stopSong = function(song) {
+      currentBuzzObject.stop();
+      SongPlayer.currentSong.playing = null;
+    };
+
+    /*
     * @function getSongIndex
     * @desc Gets index of song object in list of songs {Array}
     * @param {Object} song
@@ -89,15 +99,33 @@
 
     /*
     * @method previous
-    * @desc Gets index of previous song object in song list {Array}
+    * @desc Gets index of previous song object in song list {Array} and plays it
     */
     SongPlayer.previous = function() {
       var currentSongIndex = getSongIndex(SongPlayer.currentSong);
       currentSongIndex--;
 
       if (currentSongIndex < 0) {
-          currentBuzzObject.stop();
+          stopSong(song);
           SongPlayer.play(song);
+
+      } else {
+          var song = currentAlbum.songs[currentSongIndex];
+          setSong(song);
+          playSong(song);
+      }
+    };
+
+    /*
+    * @method next
+    * @desc Gets index of next song object in song list {Array} and plays it
+    */
+    SongPlayer.next = function() {
+      var currentSongIndex = getSongIndex(SongPlayer.currentSong);
+      currentSongIndex++;
+
+      if (currentSongIndex > currentAlbum.songs.length - 1) {
+          stopSong(song);
 
       } else {
           var song = currentAlbum.songs[currentSongIndex];
